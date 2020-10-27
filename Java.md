@@ -14,4 +14,7 @@
 - 连续中值：https://leetcode-cn.com/problems/continuous-median-lcci/
 
 ### 其他
-- 大顶堆的一种创建方式：`new PriorityQueue<>((x,y) -> y-x)`
+- 大顶堆的一种创建方式：
+  ```java
+  new PriorityQueue<>((x,y) -> y-x)
+  ```
