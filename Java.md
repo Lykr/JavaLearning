@@ -1,3 +1,17 @@
+## 枚举（enums）
+
+### 示例
+```java
+public enum PizzaStatus {
+  ORDERED,
+  READY,
+  DELIVERED;
+}
+```
+
+### 注意
+比较时用 `==` 进行比较，使用 `equals()` 方式比较可能会产生 `NullPointerException` 或枚举值相同导致的错误比较。
+
 ## 优先队列（PrioritQueue）
 
 ### 性质
