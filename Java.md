@@ -1,3 +1,41 @@
+## Collections 工具类
+
+### 常用方法
+- 排序
+  ```java
+  void reverse(List list) //反转
+  void shuffle(List list) //随机排序
+  void sort(List list) //按自然排序的升序排序
+  void sort(List list, Comparator c) //定制排序，由 Comparator 控制排序逻辑
+  void swap(List list, int i , int j) //交换两个索引位置的元素
+  void rotate(List list, int distance) //旋转。当 distance 为正数时，将 list 后 distance 个元素整体移到前面。当 distance 为负数时，将 list 的前 distance 个元素整体移到后面
+  ```
+
+- 查找
+  ```java
+  int binarySearch(List list, Object key) //对 List 进行二分查找，返回索引，注意 List 必须是有序的
+  int max(Collection coll) //根据元素的自然顺序，返回最大的元素
+  int max(Collection coll, Comparator c) //根据定制排序，返回最大元素，排序规则由 Comparatator 类控制
+  int min(Collection coll) //根据元素的自然顺序，返回最小的元素
+  int min(Collection coll, Comparator c) //根据定制排序，返回最小元素，排序规则由 Comparatator 类控制
+  void fill(List list, Object obj) //用指定的元素代替指定 list 中的所有元素
+  int frequency(Collection c, Object o) //统计元素出现次数
+  int indexOfSubList(List list, List target) //找到 target 在 list 中第一次出现的索引，找不到则返回 -1
+  int lastIndexOfSubList(List source, List target) //找到 target 在 list 中最后一次出现的索引，找不到则返回 -1
+  boolean replaceAll(List list, Object oldVal, Object newVal) //用新元素替换旧元素
+  ```
+
+- 同步控制
+  
+  **性能低，最好不要用，考虑用 JUC 包下的并发容器**
+
+  ```java
+  synchronizedCollection(Collection<T> c) //返回指定 collection 支持的同步（线程安全的）collection。
+  synchronizedList(List<T> list)//返回指定 list 支持的同步 list
+  synchronizedMap(Map<K,V> m) //返回由指定 map 支持的同步 map
+  synchronizedSet(Set<T> s) //返回指定 set 支持的同步 set
+  ```
+
 ## `equals()`, `==`, `hashcode()`
 
 ### 注意事项
@@ -11,13 +49,13 @@
 ## 枚举（enums）
 
 ### 示例
-```java
-public enum PizzaStatus {
-  ORDERED,
-  READY,
-  DELIVERED;
-}
-```
+  ```java
+  public enum PizzaStatus {
+    ORDERED,
+    READY,
+    DELIVERED;
+  }
+  ```
 
 ### 注意
 比较时用 `==` 进行比较，使用 `equals()` 方式比较可能会产生 `NullPointerException` 或枚举值相同导致的错误比较。
