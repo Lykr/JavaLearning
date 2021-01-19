@@ -5,5 +5,11 @@
     <file url="file://$PROJECT_DIR$/springmvc-01-servlet/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springmvc-02-hellomvc/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springmvc-02-hellomvc/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springmvc-03-annotation/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springmvc-03-annotation/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springmvc-04-controller/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springmvc-04-controller/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springmvc-05-json/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springmvc-05-json/src/main/resources" charset="UTF-8" />
   </component>
 </project>
