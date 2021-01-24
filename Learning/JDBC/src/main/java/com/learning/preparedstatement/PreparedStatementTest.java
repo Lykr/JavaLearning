@@ -1,7 +1,7 @@
 package com.learning.preparedstatement;
 
 import com.learning.connection.ConnectionTest;
-import com.learning.util.JDBCUtil;
+import com.learning.util.JDBCUtils;
 import org.junit.Test;
 
 import java.io.InputStream;
@@ -72,7 +72,7 @@ public class PreparedStatementTest {
         Connection connection = null;
         PreparedStatement ps = null;
         try {
-            connection = JDBCUtil.getConnection();
+            connection = JDBCUtils.getConnection();
             String sql = "UPDATE user SET name = ? where id = ?";
             ps = connection.prepareStatement(sql);
             ps.setObject(1, "Hu");
@@ -81,7 +81,7 @@ public class PreparedStatementTest {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(connection, ps);
+            JDBCUtils.closeResource(connection, ps);
         }
     }
 
@@ -94,7 +94,7 @@ public class PreparedStatementTest {
         Connection connection = null;
         PreparedStatement ps = null;
         try {
-            connection = JDBCUtil.getConnection();
+            connection = JDBCUtils.getConnection();
             ps = connection.prepareStatement(sql);
             for (int i = 0; i < objs.length; i++) {
                 ps.setObject(i + 1, objs[i]);
@@ -103,7 +103,7 @@ public class PreparedStatementTest {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(connection, ps);
+            JDBCUtils.closeResource(connection, ps);
         }
     }
 

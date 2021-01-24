@@ -1,13 +1,10 @@
 package com.learning.util;
 
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Properties;
 
-public class JDBCUtil {
+public class JDBCUtils {
 
     public static Connection getConnection() throws Exception {
         //读取配置文件的信息
@@ -25,7 +22,7 @@ public class JDBCUtil {
 
         Class.forName(driverClass); //使用反射获取 Driver 对象
 
-        Connection connection = DriverManager.getConnection(url, user, password); //获取连接对象
+        Connection connection = DriverManager.getConnection(url, user, password); //通过 DriverManager 获取连接对象
         return connection;
     }
 
@@ -40,5 +37,14 @@ public class JDBCUtil {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    public static void closeResource(Connection connection, PreparedStatement ps, ResultSet rs) {
+        try {
+            if (rs != null) rs.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        closeResource(connection, ps);
     }
 }

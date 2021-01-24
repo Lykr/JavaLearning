@@ -1,6 +1,6 @@
 package com.learning.transaction;
 
-import com.learning.util.JDBCUtil;
+import com.learning.util.JDBCUtils;
 import org.junit.Test;
 
 import java.sql.Connection;
@@ -13,6 +13,20 @@ import java.sql.SQLException;
  * 数据定义语言（Data Definition Language, DDL）一定自动提交
  * 数据操纵语言（Data Manipulation Language, DML）默认自动提交，通过 setAutoCommit(false) 取消（数据库用 set autocommit = false）
  * 连接关闭时会将没有执行的语句提交
+ *
+ * 数据库操作：
+ * create table accounts(
+ *     id int primary key auto_increment,
+ *     name varchar(20),
+ *     balance double
+ * );
+ * desc accounts;
+ * insert into accounts(name, balance)values('A', 1000);
+ * insert into accounts(name, balance)values('B', 1000);
+ * insert into accounts(name, balance)values('C', 2000);
+ * insert into accounts(name, balance)values('D', 3000);
+ * select * from accounts;
+ * drop table accounts;
  */
 
 public class TransactionTest {
@@ -21,7 +35,7 @@ public class TransactionTest {
         Connection connection = null;
         PreparedStatement ps = null;
         try {
-            connection = JDBCUtil.getConnection();
+            connection = JDBCUtils.getConnection();
             ps = connection.prepareStatement(sql);
             for (int i = 0; i < objs.length; i++) {
                 ps.setObject(i + 1, objs[i]);
@@ -30,7 +44,7 @@ public class TransactionTest {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(connection, ps);
+            JDBCUtils.closeResource(connection, ps);
         }
         return 0;
     }
@@ -66,7 +80,7 @@ public class TransactionTest {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(null, ps);
+            JDBCUtils.closeResource(null, ps);
         }
         return 0;
     }
@@ -83,7 +97,7 @@ public class TransactionTest {
     public void testTransactionUpdate() {
         Connection connection = null;
         try {
-            connection = JDBCUtil.getConnection();
+            connection = JDBCUtils.getConnection();
             connection.setAutoCommit(false); //取消自动提交
 
             String sql1 = "update accounts set balance = balance - 100 where name = ?";
@@ -109,7 +123,23 @@ public class TransactionTest {
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
-            JDBCUtil.closeResource(connection, null);
+            JDBCUtils.closeResource(connection, null);
+        }
+    }
+
+    //设置隔离级别
+    @Test
+    public void testTransactionIsolation() {
+        Connection connection = null;
+        try {
+            connection = JDBCUtils.getConnection();
+            System.out.println("当前事务隔离级别：" + connection.getTransactionIsolation()); //查询隔离级别
+            connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ); //设置隔离级别
+            System.out.println("当前事务隔离级别：" + connection.getTransactionIsolation()); //查询隔离级别
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            JDBCUtils.closeResource(connection, null);
         }
     }
 }

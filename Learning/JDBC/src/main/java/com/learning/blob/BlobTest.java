@@ -1,6 +1,6 @@
 package com.learning.blob;
 
-import com.learning.util.JDBCUtil;
+import com.learning.util.JDBCUtils;
 import org.junit.Test;
 
 import java.io.File;
@@ -23,7 +23,7 @@ public class BlobTest {
         Connection conn = null;
         PreparedStatement ps = null;
         try {
-            conn = JDBCUtil.getConnection();
+            conn = JDBCUtils.getConnection();
             String sql = "insert into users(name, password, birthday, photo) values (?, ?, ?, ?)";
             ps = conn.prepareStatement(sql);
             ps.setObject(1, "Kun");
@@ -35,7 +35,7 @@ public class BlobTest {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps);
+            JDBCUtils.closeResource(conn, ps);
         }
     }
 
@@ -49,7 +49,7 @@ public class BlobTest {
         InputStream is = null;
         FileOutputStream fos = null;
         try {
-            conn = JDBCUtil.getConnection();
+            conn = JDBCUtils.getConnection();
             String sql = "select name, password, birthday, photo from users where id = ?";
             ps = conn.prepareStatement(sql);
             ps.setObject(1, 5);
@@ -77,7 +77,7 @@ public class BlobTest {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            JDBCUtil.closeResource(conn, ps);
+            JDBCUtils.closeResource(conn, ps);
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.learning.preparedstatement;
 
-import com.learning.util.JDBCUtil;
+import com.learning.util.JDBCUtils;
 import org.junit.Test;
 
 import java.sql.Connection;
@@ -38,7 +38,7 @@ public class MultiInsertTest {
         try {
             long start = System.currentTimeMillis();
 
-            conn = JDBCUtil.getConnection();
+            conn = JDBCUtils.getConnection();
             String sql = "insert into goods(name)values(?)";
             ps = conn.prepareStatement(sql);
             for (int i = 1; i <= 20000; i++) {
@@ -51,7 +51,7 @@ public class MultiInsertTest {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps);
+            JDBCUtils.closeResource(conn, ps);
         }
     }
 
@@ -67,7 +67,7 @@ public class MultiInsertTest {
         try {
             long start = System.currentTimeMillis();
 
-            conn = JDBCUtil.getConnection();
+            conn = JDBCUtils.getConnection();
             String sql = "insert into goods(name)values(?)";
             ps = conn.prepareStatement(sql);
             for (int i = 1; i <= 1000000; i++) {
@@ -86,7 +86,7 @@ public class MultiInsertTest {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps);
+            JDBCUtils.closeResource(conn, ps);
         }
     }
 
@@ -97,7 +97,7 @@ public class MultiInsertTest {
         try {
             long start = System.currentTimeMillis();
 
-            conn = JDBCUtil.getConnection();
+            conn = JDBCUtils.getConnection();
             conn.setAutoCommit(false); //不允许提交
             String sql = "insert into goods(name)values(?)";
             ps = conn.prepareStatement(sql);
@@ -119,7 +119,7 @@ public class MultiInsertTest {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            JDBCUtil.closeResource(conn, ps);
+            JDBCUtils.closeResource(conn, ps);
         }
     }
 }

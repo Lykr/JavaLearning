@@ -3,7 +3,6 @@ package com.learning.statement;
 import com.learning.connection.ConnectionTest;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
