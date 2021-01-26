@@ -18,7 +18,7 @@ public class DBCPTest {
         source.setDriverClassName("com.mysql.cj.jdbc.Driver");
         source.setUrl("jdbc:mysql://localhost:3306/learning_jdbc");
         source.setUsername("root");
-        source.setPassword("199761");
+        source.setPassword("123456");
 
         //其他设置
         source.setInitialSize(10);

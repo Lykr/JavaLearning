@@ -12,7 +12,7 @@ public class C3P0Test {
         cpds.setDriverClass("com.mysql.cj.jdbc.Driver");
         cpds.setJdbcUrl("jdbc:mysql://localhost:3306/learning_jdbc");
         cpds.setUser("root");
-        cpds.setPassword("199761");
+        cpds.setPassword("123456");
 
         cpds.setInitialPoolSize(10); //初始时数据库连接池中的连接数
 

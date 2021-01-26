@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.dao.EmployeesMapper">
+    <!-- id：SQL 语句的标识，resultType：返回类型，databaseId：使用的数据库-->
+    <!-- #{} 通过预编译的方式设置到 SQL 语句中（可以防止 SQL 注入），${} 取出的值直接拼接在 SQL 语句中 -->
+    <select id="getById" resultType="com.mybatis.bean.Employee" databaseId="mysql">
+        select * from Employees where id = #{id}
+    </select>
+    <select id="getById" resultType="com.mybatis.bean.Employee" databaseId="oracle">
+        select * from Employees where id = #{id}
+    </select>
+
+    <!-- 参数名 parameterType 可以省略 -->
+    <!-- 是否获取自增主键 useGeneratedKeys，将获取的值赋予 keyProperty 指定的对象-->
+    <insert id="add" parameterType="com.mybatis.bean.Employee" useGeneratedKeys="true" keyProperty="id">
+        insert into Employees (last_name, email, gender) values (#{lastName}, #{email}, #{gender})
+    </insert>
+
+    <update id="update">
+        update Employees set last_name = #{lastName}, email = #{email}, gender = #{gender} where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from Employees where id = #{id}
+    </delete>
+
+    <select id="getByIdAndLastName" resultType="com.mybatis.bean.Employee">
+        select * from Employees where id = #{id} and last_name = #{lastName}
+    </select>
+
+    <select id="getByMap" resultType="com.mybatis.bean.Employee">
+        select * from Employees where id = #{id} and last_name = #{lastName}
+    </select>
+</mapper>

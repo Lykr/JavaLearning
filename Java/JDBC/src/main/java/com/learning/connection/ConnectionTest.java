@@ -21,7 +21,7 @@ public class ConnectionTest {
         String url = "jdbc:mysql://localhost:3306/learning_jdbc";
         Properties info = new Properties();
         info.setProperty("user", "root");
-        info.setProperty("password", "199761");
+        info.setProperty("password", "123456");
 
         //获取连接
         Connection connection = driver.connect(url, info);
@@ -40,7 +40,7 @@ public class ConnectionTest {
         String url = "jdbc:mysql://localhost:3306/learning_jdbc";
         Properties info = new Properties();
         info.setProperty("user", "root");
-        info.setProperty("password", "199761");
+        info.setProperty("password", "123456");
 
         //获取连接
         Connection connection = driver.connect(url, info);
@@ -61,7 +61,7 @@ public class ConnectionTest {
         //设置数据库连接信息
         String url = "jdbc:mysql://localhost:3306/learning_jdbc";
         String user = "root";
-        String password = "199761";
+        String password = "123456";
 
         //从注册的 DriverManager 获取连接
         Connection connection = DriverManager.getConnection(url, user, password);
@@ -78,7 +78,7 @@ public class ConnectionTest {
         //设置数据库连接信息
         String url = "jdbc:mysql://localhost:3306/learning_jdbc";
         String user = "root";
-        String password = "199761";
+        String password = "123456";
 
         //获取连接
         Connection connection = DriverManager.getConnection(url, user, password);
