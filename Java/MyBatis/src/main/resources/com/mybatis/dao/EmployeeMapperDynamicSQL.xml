@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.dao.EmployeeMapperDynamicSQL">
+
+    <!--当字段信息存在时，启用查询条件-->
+    <select id="getEmpsByConditionIf" resultType="com.mybatis.bean.Employee">
+        select * from employees
+        #采用 OGNL 语言进行判断
+        #采用 where 标签，只会去掉第一个多出来的 and 或 or
+        <where>
+            <if test="id != null">id = #{id}</if>
+            <if test="lastName != null and lastName != ''">and last_name like #{lastName}</if>
+            <if test="email != null and email.trim() != ''">and email = #{email}</if>
+            <if test="gender == 1 or gender == 0">and gender = #{gender}</if>
+        </where>
+    </select>
+
+    <select id="getEmpsByConditionTrim" resultType="com.mybatis.bean.Employee">
+        select * from employees
+        <!--prefix：添加前缀，prefixOverride：去除前缀，suffix：添加后缀，suffixOverrides：去除后缀  -->
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">id = #{id}</if>
+            <if test="lastName != null and lastName != ''">and last_name like #{lastName}</if>
+            <if test="email != null and email.trim() != ''">and email = #{email}</if>
+            <if test="gender == 1 or gender == 0">and gender = #{gender}</if>
+        </trim>
+    </select>
+
+    <select id="getEmpsByConditionChoose" resultType="com.mybatis.bean.Employee">
+        select * from employees
+        <where>
+            <choose>
+                <when test="id != null">
+                    id = #{id}
+                </when>
+                <when test="lastName != null">
+                    last_name like #{lastName}
+                </when>
+                <when test="email != null">
+                    email = #{email}
+                </when>
+            </choose>
+        </where>
+    </select>
+
+    <update id="updateEmp">
+        update employees
+        <set>
+            <if test="lastName != null">
+                last_name = #{lastName},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="gender != null">
+                gender = #{gender}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateEmpTrim">
+        update employees
+        <trim prefix="set" suffixOverrides=",">
+            <if test="lastName != null">
+                last_name = #{lastName},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="gender != null">
+                gender = #{gender}
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="getEmpsByConditionForeach" resultType="com.mybatis.bean.Employee">
+        select * from employees where id in
+        <foreach collection="list" item="item_id" separator="," open="(" close=")" >
+            #{item_id}
+        </foreach>
+    </select>
+
+    <insert id="addEmps">
+        <!--依赖 MySQL 的 values(),...,() 进行添加-->
+        <!--insert into employees(last_name, gender, email, department_id) values-->
+        <!--<foreach collection="list" item="item" separator=",">-->
+        <!--    (#{item.lastName}, #{item.gender}, #{item.email}, #{item.dept.id})-->
+        <!--</foreach>-->
+        <!--另一种方法，但需要开启 MySQL 的 allowMultiQueries 选项-->
+        <foreach collection="list" item="item">
+            insert into employees (last_name, gender, email, department_id)
+            values (#{item.lastName}, #{item.gender}, #{item.email}, #{item.dept.id});
+        </foreach>
+    </insert>
+
+    <!--内置参数：_parameter 代表参数，多个参数会被封装成 Map；_databaseId 代表 databaseIdProvider 的值-->
+    <select id="getEmpsTestInnerParameter"  resultType="com.mybatis.bean.Employee">
+        <bind name="_lastName" value="'%' + lastName + '%'"/>
+        <if test="_databaseId == 'mysql'">
+            <!--引用 SQL 语句，内部可使用 property 标签给 sql 标签内的变量赋值-->
+            <include refid="selectEmps"/>
+            <if test="_parameter != null">
+                where last_name like #{_lastName}
+            </if>
+        </if>
+        <if test="_databaseId == 'oracle'">select * from employees</if>
+    </select>
+
+    <!--sql 标签，减少 SQL 语句的冗余，通过 include 标签引用-->
+    <!--sql 标签内能够使用 OGNL 语言-->
+    <!--可使用 ${} 定义变量，但不能用 #{}（不支持预编译）-->
+    <sql id="selectEmps">
+        select * from employees
+    </sql>
+</mapper>

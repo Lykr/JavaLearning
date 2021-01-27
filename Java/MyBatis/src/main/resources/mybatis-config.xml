@@ -10,11 +10,15 @@
     <settings>
         <!-- 是否开启驼峰命名自动映射，即从经典数据库列名 A_COLUMN 映射到经典 Java 属性名 aColumn，默认 false -->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!-- java null 值向数据库中的映射由 OTHER 改为 NULL -->
         <setting name="jdbcTypeForNull" value="NULL"/>
+        <!-- 开启延迟加载，确保分步的关联查找在需要的时候才加载 -->
+        <setting name="lazyLoadingEnabled" value="true"/>
     </settings>
 
     <!-- 类型别名可为 Java 类型设置一个缩写名字。 它仅用于 XML 配置，意在降低冗余的全限定类名书写 -->
     <!-- type：指定类（减少书写全限定类型的类名的冗余），alias：指定新别名 -->
+    <!-- 不建议使用别名 -->
     <typeAliases>
         <!--<typeAlias type="com.mybatis.bean.Employee"/>-->
         <!-- 或者 -->
@@ -65,15 +69,15 @@
     <!-- 注册写好的 SQL 语句映射文件——Mapper -->
     <mappers>
         <!-- 通过 xml 注册-->
-        <mapper resource="EmployeesMapper.xml"/>
+        <!--<mapper resource="EmployeeMapper.xml"/>-->
 
         <!-- 通过接口注册 -->
         <!-- 方式 1：xml 文件必须和接口同名，且处于同一目录 -->
         <!-- 方式 2：通过在接口中添加注解进行对 SQL 语句的映射 -->
         <!-- 为了配置和代码解耦，建议采用非注解的方式进行注册 -->
-        <!--<mapper class="com.mybatis.dao.EmployeesMapper"/>-->
+        <!--<mapper class="com.mybatis.dao.EmployeeMapper"/>-->
 
         <!-- 批量注册，需要将 xml 与同名的接口文件置于同一目录 -->
-        <!--<package name="com.mybatis.dao"/>-->
+        <package name="com.mybatis.dao"/>
     </mappers>
 </configuration>

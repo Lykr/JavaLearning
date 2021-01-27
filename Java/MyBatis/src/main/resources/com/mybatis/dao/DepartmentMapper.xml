@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.dao.DepartmentMapper">
+    <select id="getById" resultType="com.mybatis.bean.Department">
+        select * from Departments where id = #{id}
+    </select>
+
+    <!-- 使用 collection 定义集合的关联属性查询 -->
+    <resultMap id="DepartmentMap1" type="com.mybatis.bean.Department">
+        <id column="did" property="id"/>
+        <result column="dname" property="name"/>
+        <collection property="employeeList" ofType="com.mybatis.bean.Employee">
+            <id column="eid" property="id"/>
+            <result column="last_name" property="lastName"/>
+            <result column="email" property="email"/>
+            <result column="gender" property="gender"/>
+        </collection>
+    </resultMap>
+
+    <select id="getByIdPlus" resultMap="DepartmentMap1">
+        select d.id did, d.name dname,
+               e.id eid, e.last_name last_name, e.email email, e.gender gender
+        from departments d
+        left join employees e on d.id = e.department_id
+        where d.id = #{id};
+    </select>
+
+    <resultMap id="DepartmentMap2" type="com.mybatis.bean.Department">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <collection property="employeeList" select="com.mybatis.dao.EmployeeMapperPlus.getByDeptId" column="id"/>
+    </resultMap>
+
+    <select id="getByIdStep" resultMap="DepartmentMap2">
+        select id, name from departments where id = #{id}
+    </select>
+</mapper>
