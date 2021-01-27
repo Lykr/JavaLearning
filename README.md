@@ -1,3 +1,3 @@
-# FindJobs
+# JavaLearning
 
-Some key points about CS/SE.
+Some key points about Java.
