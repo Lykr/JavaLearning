@@ -3,6 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mybatis.dao.EmployeeMapper">
+    <!--开启二级缓存-->
+    <!--type 指定自定义缓存的全类名-->
+    <!--eviction 回收策略，包括：默认 LRU，FIFO，SOFT，WEAK-->
+    <!--flushInterval 缓存刷新的默认间隔，单位为毫秒-->
+    <!--readonly 是否只读，当设置为 true 时会直接将数据在缓存中的引用返回给用户（速度快），设置为 false 时会使用反序列化技术克隆一份数据（速度慢）-->
+    <!--size 缓存存放的元素数-->
+    <cache eviction="LRU" flushInterval="60000" readOnly="false" size="1024"/>
     <!-- id：SQL 语句的标识，resultType：返回类型，databaseId：使用的数据库-->
     <!-- #{} 通过预编译的方式设置到 SQL 语句中（可以防止 SQL 注入），${} 取出的值直接拼接在 SQL 语句中 -->
     <select id="getById" resultType="com.mybatis.bean.Employee" databaseId="mysql">

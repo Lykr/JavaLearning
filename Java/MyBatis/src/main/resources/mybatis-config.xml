@@ -14,6 +14,10 @@
         <setting name="jdbcTypeForNull" value="NULL"/>
         <!-- 开启延迟加载，确保分步的关联查找在需要的时候才加载 -->
         <setting name="lazyLoadingEnabled" value="true"/>
+        <!--开启二级缓存-->
+        <setting name="cacheEnabled" value="true"/>
+        <!--一级缓存作用域，默认 SESSION，STATEMENT-->
+        <setting name="localCacheScope" value="SESSION"/>
     </settings>
 
     <!-- 类型别名可为 Java 类型设置一个缩写名字。 它仅用于 XML 配置，意在降低冗余的全限定类名书写 -->

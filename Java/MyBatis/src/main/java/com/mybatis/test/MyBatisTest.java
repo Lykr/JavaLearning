@@ -331,4 +331,48 @@ public class MyBatisTest {
             list.forEach(System.out::println);
         }
     }
+
+    //一级缓存测试，sqlsession 级别的缓存，默认开启无法关闭
+    @Test
+    public void test23() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+
+        //通过工厂类获取 SqlSession，并通过 SqlSession 执行 SQL 语句
+        try (SqlSession session1 = sqlSessionFactory.openSession();
+             SqlSession session2 = sqlSessionFactory.openSession()) {
+            EmployeeMapper mapper1 = session1.getMapper(EmployeeMapper.class); //运用接口生成代理对象
+            EmployeeMapper mapper2 = session2.getMapper(EmployeeMapper.class); //运用接口生成代理对象
+            Employee e1 = mapper1.getById(1); //第一次查询
+            System.out.println(e1);
+            Employee e2 = mapper1.getById(1); //第二次查询
+            Employee e3 = mapper2.getById(1); //第三次查询
+            System.out.println(e1 == e2); //true，同一 sqlsession 下会用缓存
+            System.out.println(e1 == e3); //false，不同同 sqlsession 下会缓存不共享
+            mapper1.update(new Employee(4, "Chen", "Chen@learning.com", "1", null)); //增删改的 flushCache 为 true
+            Employee e4 = mapper1.getById(1); //第四次查询
+            System.out.println(e1 == e4); //false，同一 sqlsession 同一查询语句间使用增删改语句会删除缓存
+            session1.clearCache(); //清空一级缓存
+        }
+    }
+
+    //二级缓存测试，namespace（不同的 Mapper）级别的缓存，**session 关闭**后将会将缓存放入二级缓存
+    //1. 通过配置 settings 中的 cacheEnabled 来开启，默认开启但建议显式设置
+    //2. 进入 mapper.xml 添加 <cache/> 标签开启
+    //3. POJO 需要实现序列化接口
+    @Test
+    public void test24() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+
+        //通过工厂类获取 SqlSession，并通过 SqlSession 执行 SQL 语句
+        try (SqlSession session1 = sqlSessionFactory.openSession();
+             SqlSession session2 = sqlSessionFactory.openSession()) {
+            EmployeeMapper mapper1 = session1.getMapper(EmployeeMapper.class); //运用接口生成代理对象
+            EmployeeMapper mapper2 = session2.getMapper(EmployeeMapper.class); //运用接口生成代理对象
+            Employee e1 = mapper1.getById(1); //第一次查询
+            System.out.println(e1);
+            session1.close();
+            Employee e2 = mapper2.getById(1); //第二次查询，从二级缓存中拿到的数据
+            System.out.println(e1 == e2); //但是 e1 不等于 e2
+        }
+    }
 }
