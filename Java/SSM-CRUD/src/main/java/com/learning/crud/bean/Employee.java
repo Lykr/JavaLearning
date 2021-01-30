@@ -11,6 +11,28 @@ public class Employee {
 
     private Integer dId;
 
+    private Department dept;
+
+    public Employee() {
+    }
+
+    public Employee(Integer id, String name, String gender, String email, Integer dId, Department dept) {
+        this.id = id;
+        this.name = name;
+        this.gender = gender;
+        this.email = email;
+        this.dId = dId;
+        this.dept = dept;
+    }
+
+    public Department getDept() {
+        return dept;
+    }
+
+    public void setDept(Department dept) {
+        this.dept = dept;
+    }
+
     public Integer getId() {
         return id;
     }
