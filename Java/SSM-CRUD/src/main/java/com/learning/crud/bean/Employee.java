@@ -1,12 +1,16 @@
 package com.learning.crud.bean;
 
+import javax.validation.constraints.Pattern;
+
 public class Employee {
     private Integer id;
 
+    @Pattern(regexp = "(^[a-zA-Z0-9_-]{6,16}$)|(^[\\\\u2E80-\\\\u9FFF]{2,5})", message = "用户名格式错误")
     private String name;
 
     private String gender;
 
+    @Pattern(regexp = "^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$", message = "邮箱格式错误")
     private String email;
 
     private Integer dId;
@@ -23,6 +27,18 @@ public class Employee {
         this.email = email;
         this.dId = dId;
         this.dept = dept;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", gender='" + gender + '\'' +
+                ", email='" + email + '\'' +
+                ", dId=" + dId +
+                ", dept=" + dept +
+                '}';
     }
 
     public Department getDept() {
