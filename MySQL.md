@@ -100,7 +100,7 @@ select user();
 1. = 和 <>：不能比较 null 值，当比较的元素中有 null 时返回 null
 2. <=>：可以比较 null 值
 
-MySQL 中的与或非除了能用 &&、||、! 来表示，还能用 and、or、not 的方式表示。
+MySQL 中的与或非除了能用 &&、\|\|、! 来表示，还能用 and、or、not 的方式表示。
 
 ### 字符串相关函数
 
@@ -442,6 +442,7 @@ truncate table table_name;
 **binary、varbinary、blob、text、enum 和 set 待补充**
 
 #### 日期型
+
 |类型|格式|范围|备注|
 |-|-|-|-|
 |date|'YYYY-MM-DD'|'1000-01-01' 到 '9999-12-31'||
