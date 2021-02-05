@@ -210,23 +210,6 @@ select database();
 select user();
 ```
 
-### 控制流程
-
-```sql
--- 三目运算
-if(condition, a, b);
-
--- switch 判断
-select column_1, ..., column_k
-case column_x
-when n_1 then expression_1
-...
-when n_m then expression_m
-else expression_default
-end
-from table_name
-```
-
 ### 模糊查询
 
 ```sql
@@ -276,7 +259,7 @@ select count(column) from table_name;
    按 expression 进行筛选，
    最后按 column_order 进行排序，
    [] 内为可选语句 */
-select 统计函数([别名.]统计字段), ..., [别名.]查询字段, ...
+select 聚合函数([别名.]统计字段), ..., [别名.]查询字段, ...
 from 表名 [别名], ...
 [where 条件语句]
 [group by 分组字段]
@@ -284,15 +267,15 @@ from 表名 [别名], ...
 [order by 排序字段 [排序方式]];
 ```
 
-**注意**：当 MySQL 的 sql_mode 为 only_full_group_by 时，所有 select 后出现且未使用统计函数的字段需要使用 group by 作为分组的字段。
+**注意**：当 MySQL 的 sql_mode 为 only_full_group_by 时，所有 select 后出现且未使用聚合函数的字段需要使用 group by 作为分组的字段。
 
 ### 多表/连接查询
 
-- sql92 和 sql99 标准
-  - sql92 标准：书写简单，易读性不好，仅支持内连接
-  - sql99 标准：支持内、外、交叉连接，易读性好，书写麻烦
+- SQL92 和 SQL99 标准
+  - SQL92 标准：书写简单，易读性不好，仅支持内连接
+  - SQL99 标准：支持内、外、交叉连接，易读性好，书写麻烦
 
-#### sql92 标准
+#### SQL92 标准
 
 ```sql
 select [别名_1.]查询字段, ..., [别名_n.]查询字段
@@ -303,7 +286,7 @@ from 表名_1 [别名_1], ..., 表名_n [别名_n]
 [order by 排序字段 [排序方式]];
 ```
 
-#### sql99 标准
+#### SQL99 标准
 
 - 内连接、外连接和交叉连接
   - 内连接（`join`）：指连接结果仅包含符合连接条件的行
@@ -374,12 +357,12 @@ update table_name set column_1 = value_1, ..., column_n = value_n
 where condition
 
 -- 多表连接修改
---- sql92
+--- SQL92
 update table_1 t1, ..., table_n tn
 set t1.column_x = value_x, ..., tn.column_y = value_y
 where condition
 
---- sql99
+--- SQL99
 update table_1 t1
 ...
 [left/right] join table_n tn on condition
@@ -414,6 +397,8 @@ truncate table table_name;
 ## DDL 语言
 
 ### 数据类型
+
+参考：[MySQL 8.0 Reference Manual / Data Types](https://dev.mysql.com/doc/translation-refman/8.0/en/data-types.html)
 
 #### 数值型
 |类型|所占字节数|备注|
@@ -471,6 +456,7 @@ drop database [if exists] db_name;
   2. `unique`：不接受重复值，一个表可以有多个该约束
   3. `primary key`：不接受重复值，一个表只能有一个该约束，记录会按照主键升序排列
      - 对于整数型主键，可在声明时附加 `auto_increment` 让主键自增
+     - 可以通过`set auto_increment_increment = s` 设置自增步长 `s`，默认为 1
   4. `foreign key`：声明外键，必须是另一个表的主键，且类型一致
      - 例：`foreign key(table_a_column) references table_b(primary_column)`
   5. `check`：设置该列需要满足的条件，MySQL 8.0.16 后开始支持
@@ -479,16 +465,20 @@ drop database [if exists] db_name;
 ```sql
 -- 创建表
 create table [if not exists] table_name(
-    column_name column_type [constraints],
+    -- 列级约束，除了外键都支持
+    column_name column_type [column_constraint],
+    ...
+    -- 表级约束，除了非空和默认都支持
+    [[constraint constraint_name] table_constraint(column)],
     ...
 );
 
 -- 修改表
 --- 添加列
-alter table table_name add column column_name column_type [first/after column_offset]
+alter table table_name add column column_name column_type [first/after column_offset] [constraint]
 
---- 修改列的类型或约束
-alter table table_name modify column column_name column_type [constraints]
+--- 修改列的类型或约束，不写约束则会删除约束
+alter table table_name modify column column_name column_type [constraint]
 
 --- 修改列名
 alter table table_name change column column_name new_column_name column_type;
@@ -511,5 +501,248 @@ create table new_table
 select */column_1, ..., column_n from old_table [where condition];
 ```
 
-## 参考
-1. [MySQL 8.0 Reference Manual / Data Types](https://dev.mysql.com/doc/translation-refman/8.0/en/data-types.html)
+## TCL 语言
+
+### 事务
+
+- 一个或一组 SQL 语句组成一个执行单元，这个执行单元要么全部执行，要么全部不执行。
+- 事务的特性（ACID）
+  - 原子性（Atomicity）：一个事务不可再分割，要么都执行要么都不执行
+  - 一致性（Consistency）：一个事务执行会使数据从一个一致状态切换到另外一个一致状态
+  - 隔离性（Isolation）：一个事务的执行不受其他事务的干扰，主要针对并发场景
+  - 持久性（Durability）：一个事务一旦提交，则会永久的改变数据库的数据
+
+事务演示：
+
+```sql
+set autocommit = 0; -- 关闭自动提交
+start transaction; -- 当自动提交关闭时，可省略该语句
+
+-- 事务语句 1
+savepoint a; -- 回滚点
+-- 事务语句 2
+
+-- 提交或者回滚
+commit/rollback/rollback to a;
+```
+
+### 并发事务
+
+- 当同时运行多个事务，并且这些事务访问数据库中相同的数据时，如果没有采取必要的隔离机制，就会导致各种并发问题
+  - 脏读：一个事务读取了其他事务更新但还未提交的数据，如果回滚，读取到的数据就是无效的
+  - 不可重复读：一个事务多次读取同一字段，值不同
+  - 幻读：一个事务读取字段后，如果其他事务插入新的记录，再次读取会新增一些记录
+
+为了避免这些问题，数据库必须具有隔离运行并发事务的能力，避免事务之间相互影响
+
+- 隔离级别
+  - 一个事务与其他事务隔离的程度称为隔离级别，不同隔离级别对应不同的干扰程度，隔离级别越高，数据一致性就越好，但并发性越弱
+  - MySQL 支持四种隔离级别，默认为可重复读
+  - 
+    |隔离级别|脏读|不可重复读|幻读|
+    |-|:-:|:-:|:-:|
+    |读未提交（Read uncommitted）|×|×|×|
+    |读已提交（read committed）|✓|×|×|
+    |可重复读（Repeatable read）|✓|✓|×|
+    |串行化（Serializable）|✓|✓|✓|
+
+## 视图
+
+通过表动态生成的数据
+
+- 视图和表的区别
+  |关键字|空间占用|用途|
+  |-|-|-|
+  |view|占用少，只保存 SQL 逻辑|一般用于查询|
+  |table|占用多，保存实际的数据|增删改查|
+
+- 视图的更新（[MySQL 8.0 Reference Manual / Updatable and Insertable Views](https://dev.mysql.com/doc/refman/8.0/en/view-updatability.html)）
+  - 对视图的更新会影响原始表
+  - 当视图和原始表的每一行为一对一关系时，该视图可更新
+  - 更具体的，包含以下内容的视图不能更新：
+    1. 聚合函数或窗函数（`sum()`、`min()`、`count()` 等）
+    2. `distinct`
+    3. `group by`
+    4. `having`
+    5. `union`、`union all`
+    6. 常量视图
+    7. `select` 包含子查询：非依赖的子查询不能插入、但能修改和删除
+    8. `join`：包括 SQL99 或 SQL92 标准，能够更新，但不能插入
+    9. `from` 一个不能更新的视图
+    10. `where` 的子查询引用了 `from` 中的表
+    11. `algorithm = temptable`
+    12. 对原始表任意列多次引用：不能插入，能够修改和删除
+
+```sql
+-- 创建视图
+create view view_name as select ...; -- 接查询语句
+
+-- 修改视图
+create or replace view view_name as select ...; -- 方式 1
+alter view view_name as select ...; -- 方式 2
+
+-- 删除视图
+drop view view_name_1, ..., view_name_n;
+
+-- 查看视图
+desc view_name;
+show create view view_name;
+```
+
+## 变量
+
+- 系统变量：由系统提供，系统层面
+  - 全局变量：对任何客户端都有效
+  - 会话变量：针对当前会话有效
+  - 
+    ```sql
+    -- 查看所有系统变量
+    show global/[session] variables;
+
+    -- 查看满足条件的系统变量
+    show global/[session] like wildchar;
+
+    -- 查看指定系统变量
+    show @@global/[session].var_name;
+
+    -- 为指定系统变量赋值
+    set global/[session] var_name = var_value;
+    ```
+- 自定义变量：用户自定义的变量
+  - 用户变量：针对当前会话有效
+  - 局部变量：仅在 `begin` `end` 中有效
+  - 
+    ```sql
+    -- 声明
+    declare var_name var_type [default var_value];
+
+    -- 赋值
+    set var_name = var_value;
+    set var_name := var_value;
+    select @var_name := var_value;
+    select var_value into var_name;
+    
+    -- 查看
+    select var_name;
+    ```
+    
+## 存储过程和函数
+
+类似 Java 的方法。
+
+- 存储过程和函数：一组预先编译好的 SQL 语句的集合
+  - 提高代码的重用性
+  - 简化操作
+  - 减少了编译次数
+  - 减少了与数据库连接的次数
+
+- 存储过程和函数的区别
+  - 存储过程能够有多个返回值，适合批量更新
+  - 函数有且只有一个返回值，适合处理数据
+
+### 存储过程
+
+```sql
+-- 创建
+-- param_def_list 为参数定义列表
+delimiter $; -- 重新设置结束标记
+create procedure procedure_name(param_def_list)
+begin -- 如果只有一句 SQL 语句，可以省略 begin end
+    -- SQL 语句，用分号结束
+end $
+delimiter ;$ -- 恢复结束标记
+
+-- 调用
+call procedure_name(param_list);
+
+-- 查看
+show create procedure procedure_name;
+
+-- 删除
+drop procedure procedure_name;
+```
+
+- 参数定义列表包含：参数模式、参数名、参数类型，例：`inout param_name int`
+- 参数模式
+  - `in`：该参数作为输入
+  - `out`：该参数作为输出，即返回值
+  - `inout`：该参数即是输入又是输出
+
+### 函数
+
+```sql
+-- 创建
+delimiter $; -- 重新设置结束标记
+create function function_name(param_def_list) returns return_type
+begin
+  -- SQL 语句，用分号结束
+end $
+delimiter ;$ -- 恢复结束标记
+
+-- 调用
+select function_name(param_list);
+
+-- 查看
+show create function function_name;
+
+-- 删除
+drop function function_name;
+```
+
+## 控制流程
+
+### 顺序结构
+
+顺序执行，最一般的结构。
+
+### 分支结构
+
+```sql
+-- 三目运算
+if(condition, a, b);
+
+-- if 结构，只能在 begin end 里使用
+begin
+  if condition_1 then expression_1;
+  elseif condition_2 then expression_2;
+  else expression_default;
+  end if;
+end;
+-- case 结构，可和其他语句配合使用
+select column_1, ..., column_k
+case column_x
+when n_1 then expression_1
+...
+when n_m then expression_m
+else expression_default
+end
+from table_name
+```
+
+### 循环结构
+
+只能在 begin end 中使用
+
+- 循环控制
+  - `iterate loop_name` 结束 loop_name 本次循环，继续下一次
+  - `leave loop_name` 跳出 loop_name 循环
+
+```sql
+begin
+  -- while
+  [while_name:] while while_condition do
+    while_expression;
+  end while [while_name];
+
+  -- loop
+  [loop_name:] loop
+    loop_expression;
+  end loop [loop_name];
+
+  -- repeat
+  [repeat_name:] repeat
+    repeat_expression;
+  until end_condition
+  end repeat [repeat_name];
+end;
+```
