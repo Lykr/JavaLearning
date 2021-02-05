@@ -401,6 +401,7 @@ truncate table table_name;
 参考：[MySQL 8.0 Reference Manual / Data Types](https://dev.mysql.com/doc/translation-refman/8.0/en/data-types.html)
 
 #### 数值型
+
 |类型|所占字节数|备注|
 |-|-|-|
 |tinyint|1|以下 5 种 *int 型如不标明 unsigned 默认带符号|
