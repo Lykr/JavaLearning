@@ -23,6 +23,10 @@ import org.springframework.context.annotation.Configuration;
  *   3.1. 方法
  *   3.2. 构造器：如果组件只有一个有参构造器，该 @Autowired 可以省略
  *   3.3. 参数
+ *
+ * 4. 自定义组件需要使用 Spring 底层的组件
+ *   让自定义组件实现 xxxAware 接口，在创建对象的时候胡调用规定的方法注入组件
+ *     比如：ApplicationContextAware
  */
 
 @ComponentScan({"com.learning.bean", "com.learning.service", "com.learning.dao", "com.learning.controller"})
