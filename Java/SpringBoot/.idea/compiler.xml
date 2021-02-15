@@ -6,13 +6,28 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="SpringBoot" />
+        <module name="SpringBoot-Web-01" />
+        <module name="springboot-hello-02" />
+        <module name="springboot-hello-01" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="SpringBoot-1" target="10" />
+      <module name="SpringBoot-Hello-01" target="1.8" />
+      <module name="springboot-hello-01" target="1.8" />
+      <module name="SpringBoot-Hello-02" target="1.8" />
+      <module name="springboot-hello-02" target="1.8" />
+      <module name="SpringBoot-Web-01" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="SpringBoot" options="-parameters" />
+      <module name="SpringBoot-1" options="-parameters" />
+      <module name="SpringBoot-Hello-01" options="-parameters" />
+      <module name="SpringBoot-Hello-02" options="-parameters" />
+      <module name="SpringBoot-Web-01" options="-parameters" />
+      <module name="springboot-hello-01" options="-parameters" />
+      <module name="springboot-hello-02" options="-parameters" />
     </option>
   </component>
 </project>

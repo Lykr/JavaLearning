@@ -1,0 +1,13 @@
+#spring:
+#  mvc:
+#    static-path-pattern: /res/** # 静态资源的访问方式，默认为 '/*'，'/*' 不包括子目录， '/**' 包括子目录
+#  web:
+#    resources:
+#      static-locations: classpath:/pages # 指定静态资源的存放目录
+
+server:
+  servlet:
+    encoding:
+      enabled: true
+      force: true
+      charset: UTF-8
