@@ -1,0 +1,50 @@
+spring:
+  thymeleaf:
+    servlet:
+      content-type: text/html
+      mode: LEGACYHTML5
+      cache: false
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/learning_jdbc
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#    type: com.zaxxer.hikari.HikariDataSource
+
+    druid:
+      filters: stat,wall
+      aop-patterns: com.learning.springboot
+      stat-view-servlet:
+        enabled: true
+        login-username: admin
+        login-password: admin
+        reset-enable: false
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+      filter:
+        stat:
+          enabled: true
+          slow-sql-millis: 1000
+          log-slow-sql: true
+        wall:
+          enabled: true
+          config:
+            drop-table-allow: true
+
+  jdbc:
+    template:
+      query-timeout: 3 # in seconds
+
+mybatis:
+#  config-location: classpath:mybatis/config.xml
+  mapper-locations: classpath:mybatis/mappers/*.xml
+  # 如果使用全局配置文件，就不能写 configuration
+  configuration:
+    map-underscore-to-camel-case: true

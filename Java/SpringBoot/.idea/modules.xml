@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SpringBoot-Web-01/SpringBoot-Web-01.iml" filepath="$PROJECT_DIR$/SpringBoot-Web-01/SpringBoot-Web-01.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SpringBoot-Web-Admin/SpringBoot-Web-Admin.iml" filepath="$PROJECT_DIR$/SpringBoot-Web-Admin/SpringBoot-Web-Admin.iml" />
       <module fileurl="file://$PROJECT_DIR$/SpringBoot-Hello-01/springboot-hello-01.iml" filepath="$PROJECT_DIR$/SpringBoot-Hello-01/springboot-hello-01.iml" />
       <module fileurl="file://$PROJECT_DIR$/SpringBoot-Hello-02/springboot-hello-02.iml" filepath="$PROJECT_DIR$/SpringBoot-Hello-02/springboot-hello-02.iml" />
     </modules>
