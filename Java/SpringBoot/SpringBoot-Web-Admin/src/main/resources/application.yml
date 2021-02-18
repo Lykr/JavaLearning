@@ -42,6 +42,9 @@ spring:
     template:
       query-timeout: 3 # in seconds
 
+  redis:
+    client-type: jedis
+
 mybatis:
 #  config-location: classpath:mybatis/config.xml
   mapper-locations: classpath:mybatis/mappers/*.xml
