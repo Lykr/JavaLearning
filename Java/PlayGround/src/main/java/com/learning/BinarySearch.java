@@ -1,8 +1,8 @@
 package com.learning;
 
-public class Main {
+public class BinarySearch {
     public static void main(String[] args) {
-        int len = 3000;
+        int len = 100;
         int[] data = new int[len];
 
         data[0] = 10;
