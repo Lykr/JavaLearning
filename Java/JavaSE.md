@@ -88,3 +88,17 @@
   ```java
   new PriorityQueue<>((x,y) -> y-x)
   ```
+
+## 流（Stream）
+
+### 常用操作
+
+```java
+// 数组
+int[] arr;
+
+//注意，流不能被重复使用
+int max = Arrays.stream(arr).max().getAsInt(); //最大值
+int min = Arrays.stream(arr).min().getAsInt(); //最小值
+double average = Arrays.stream(arr).average().getAsDouble(); //平均值
+```
