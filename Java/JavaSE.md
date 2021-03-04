@@ -94,11 +94,22 @@
 ### 常用操作
 
 ```java
+// 注意，流不能被重复使用
+
 // 数组
 int[] arr;
 
-//注意，流不能被重复使用
+// 数组转列表
+List<?> newList = Arrays.stream(arr).boxed().collect(Collectors.toList());
+
+// 最大、最小、平均值
 int max = Arrays.stream(arr).max().getAsInt(); //最大值
 int min = Arrays.stream(arr).min().getAsInt(); //最小值
 double average = Arrays.stream(arr).average().getAsDouble(); //平均值
+
+// 列表
+List<?> list;
+
+// 列表转数组
+int[] newArray = list.stream().mapToInt(v -> v).toArray();
 ```

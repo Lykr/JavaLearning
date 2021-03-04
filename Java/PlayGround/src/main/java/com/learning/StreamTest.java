@@ -1,6 +1,9 @@
 package com.learning;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class StreamTest {
@@ -22,5 +25,8 @@ public class StreamTest {
         double average = Arrays.stream(arr1).average().getAsDouble(); //平均值
         System.out.println("最大值：" + max + "，最小值：" + min + "，平均值：" + average);
 
+        List<Integer> list = new ArrayList<>(Arrays.stream(arr1).boxed().collect(Collectors.toList()));
+        int[] ints = list.stream().mapToInt(v -> v).toArray();
+        System.out.println(Arrays.toString(ints));
     }
 }
