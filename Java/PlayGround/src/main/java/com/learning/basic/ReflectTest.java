@@ -1,11 +1,11 @@
-package com.learning;
+package com.learning.basic;
 
 import java.lang.reflect.InvocationTargetException;
 
 public class ReflectTest {
     public static void main(String[] args) {
         try {
-            Class.forName("com.learning.Hello").getMethod("hello").invoke(null, null);
+            Class.forName("com.learning.basic.Hello").getMethod("hello").invoke(null, null);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {

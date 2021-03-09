@@ -1,4 +1,4 @@
-package com.learning;
+package com.learning.basic;
 
 public class LocalVariables {
     public static void main(String[] args) {

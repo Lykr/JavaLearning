@@ -1,4 +1,4 @@
-package com.learning;
+package com.learning.basic;
 
 public class BinarySearch {
     public static void main(String[] args) {
