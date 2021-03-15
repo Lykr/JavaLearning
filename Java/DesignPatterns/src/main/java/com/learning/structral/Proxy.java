@@ -19,55 +19,55 @@ public class Proxy {
         Subject dynamicProxy = (Subject) java.lang.reflect.Proxy.newProxyInstance(Subject.class.getClassLoader(), new Class[]{Subject.class}, handler);
         dynamicProxy.print();
     }
+}
 
-    interface Subject {
-        void print();
+interface Subject {
+    void print();
+}
+
+class RealSubject implements Subject {
+
+    @Override
+    public void print() {
+        System.out.println("Hello~");
+    }
+}
+
+class StaticProxy implements Subject {
+    private Subject subject;
+
+    public StaticProxy() {
+        subject = new RealSubject();
     }
 
-    static class RealSubject implements Subject {
-
-        @Override
-        public void print() {
-            System.out.println("Hello~");
-        }
+    @Override
+    public void print() {
+        preMethod();
+        subject.print();
+        postMethod();
     }
 
-    static class StaticProxy implements Subject {
-        private Subject subject;
-
-        public StaticProxy() {
-            subject = new RealSubject();
-        }
-
-        @Override
-        public void print() {
-            preMethod();
-            subject.print();
-            postMethod();
-        }
-
-        private void preMethod() {
-            System.out.println("PreMethod~");
-        }
-
-        private void postMethod() {
-            System.out.println("PostMethod~");
-        }
+    private void preMethod() {
+        System.out.println("PreMethod~");
     }
 
-    static class Handler implements InvocationHandler {
-        private Object target;
+    private void postMethod() {
+        System.out.println("PostMethod~");
+    }
+}
 
-        public Handler() {
-            this.target = new RealSubject();
-        }
+class Handler implements InvocationHandler {
+    private Object target;
 
-        @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            System.out.println("PreMethod~");
-            method.invoke(target, null);
-            System.out.println("PostMethod~");
-            return null;
-        }
+    public Handler() {
+        this.target = new RealSubject();
+    }
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        System.out.println("PreMethod~");
+        method.invoke(target, null);
+        System.out.println("PostMethod~");
+        return null;
     }
 }

@@ -33,71 +33,72 @@ public class Composite {
 
         folderA.show();
     }
-    static abstract class File {
-        public String name;
+}
 
-        public File(String name) {
-            this.name = name;
-        }
+abstract class File {
+    public String name;
 
-        public abstract void show();
+    public File(String name) {
+        this.name = name;
     }
 
-    static class Folder extends File {
-        private List<File> files;
+    public abstract void show();
+}
 
-        public Folder(String name) {
-            super(name);
-            files = new ArrayList<>();
-        }
+class Folder extends File {
+    private List<File> files;
 
-        @Override
-        public void show() {
-            System.out.println("现在在目录 " + name);
-            for (File file : files) {
-                file.show();
-            }
-        }
+    public Folder(String name) {
+        super(name);
+        files = new ArrayList<>();
+    }
 
-        public void add(File... files) {
-            this.files.addAll(Arrays.asList(files));
-        }
-
-        public void remove(File... files) {
-            this.files.removeAll(Arrays.asList(files));
+    @Override
+    public void show() {
+        System.out.println("现在在目录 " + name);
+        for (File file : files) {
+            file.show();
         }
     }
 
-    static class TextFile extends File {
-        public TextFile(String name) {
-            super(name);
-        }
-
-        @Override
-        public void show() {
-            System.out.println("显示文本文件 " + name);
-        }
+    public void add(File... files) {
+        this.files.addAll(Arrays.asList(files));
     }
 
-    static class VideoFile extends File {
-        public VideoFile(String name) {
-            super(name);
-        }
+    public void remove(File... files) {
+        this.files.removeAll(Arrays.asList(files));
+    }
+}
 
-        @Override
-        public void show() {
-            System.out.println("显示视频文件 " + name);
-        }
+class TextFile extends File {
+    public TextFile(String name) {
+        super(name);
     }
 
-    static class ImageFile extends File {
-        public ImageFile(String name) {
-            super(name);
-        }
+    @Override
+    public void show() {
+        System.out.println("显示文本文件 " + name);
+    }
+}
 
-        @Override
-        public void show() {
-            System.out.println("显示图像文件 " + name);
-        }
+class VideoFile extends File {
+    public VideoFile(String name) {
+        super(name);
+    }
+
+    @Override
+    public void show() {
+        System.out.println("显示视频文件 " + name);
+    }
+}
+
+class ImageFile extends File {
+    public ImageFile(String name) {
+        super(name);
+    }
+
+    @Override
+    public void show() {
+        System.out.println("显示图像文件 " + name);
     }
 }

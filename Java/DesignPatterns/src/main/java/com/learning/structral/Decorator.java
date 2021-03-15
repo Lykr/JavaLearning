@@ -7,38 +7,38 @@ public class Decorator {
         flyCar.move();
         flyCar.fly();
     }
+}
 
-    interface Car {
-        void move();
+interface Car {
+    void move();
+}
+
+class NormalCar implements Car {
+    @Override
+    public void move() {
+        System.out.println("I can move!");
+    }
+}
+
+abstract class SuperCar implements Car {
+    protected Car car;
+
+    public SuperCar(Car car) {
+        this.car = car;
+    }
+}
+
+class FlyDecorator extends SuperCar {
+    public FlyDecorator(Car car) {
+        super(car);
     }
 
-    static class NormalCar implements Car {
-        @Override
-        public void move() {
-            System.out.println("I can move!");
-        }
+    @Override
+    public void move() {
+        car.move();
     }
 
-    static abstract class SuperCar implements Car {
-        protected Car car;
-
-        public SuperCar(Car car) {
-            this.car = car;
-        }
-    }
-
-    static class FlyDecorator extends SuperCar {
-        public FlyDecorator(Car car) {
-            super(car);
-        }
-
-        @Override
-        public void move() {
-            car.move();
-        }
-
-        public void fly() {
-            System.out.println("I can fly, too!");
-        }
+    public void fly() {
+        System.out.println("I can fly, too!");
     }
 }

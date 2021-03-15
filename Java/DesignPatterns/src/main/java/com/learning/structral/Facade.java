@@ -10,27 +10,27 @@ public class Facade {
         TeaFacade teaFacade = new TeaFacade();
         teaFacade.makeTea();
     }
+}
 
-    static class TeaFacade {
-        private Kettle kettle = new Kettle();
-        private TeaCans teaCans = new TeaCans();
+class TeaFacade {
+    private Kettle kettle = new Kettle();
+    private TeaCans teaCans = new TeaCans();
 
-        public void makeTea() {
-            kettle.getHotWater();
-            teaCans.getTeaLeaves();
-            System.out.println("Made a tea!");
-        }
+    public void makeTea() {
+        kettle.getHotWater();
+        teaCans.getTeaLeaves();
+        System.out.println("Made a tea!");
     }
+}
 
-    static class Kettle {
-        public void getHotWater() {
-            System.out.println("Get hot water.");
-        }
+class Kettle {
+    public void getHotWater() {
+        System.out.println("Get hot water.");
     }
+}
 
-    static class TeaCans {
-        public void getTeaLeaves() {
-            System.out.println("Get tea leaves");
-        }
+class TeaCans {
+    public void getTeaLeaves() {
+        System.out.println("Get tea leaves");
     }
 }

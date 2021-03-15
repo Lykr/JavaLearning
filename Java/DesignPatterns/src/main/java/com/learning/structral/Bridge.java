@@ -12,58 +12,59 @@ public class Bridge {
         square.draw();
         triangle.draw();
     }
+}
 
-    static abstract class Shape {
-        private final Color color;
 
-        public Shape(Color color) {
-            this.color = color;
-        }
+abstract class Shape {
+    private final Color color;
 
-        public Color getColor() {
-            return color;
-        }
-
-        public abstract void draw();
+    public Shape(Color color) {
+        this.color = color;
     }
 
-    static class Square extends Shape {
-        public Square(Color color) {
-            super(color);
-        }
-
-        @Override
-        public void draw() {
-            System.out.println("画一个" + getColor().drawColor() + "的正方形");
-        }
+    public Color getColor() {
+        return color;
     }
 
-    static class Triangle extends Shape {
-        public Triangle(Color color) {
-            super(color);
-        }
+    public abstract void draw();
+}
 
-        @Override
-        public void draw() {
-            System.out.println("画一个" + getColor().drawColor() + "的三角形");
-        }
+class Square extends Shape {
+    public Square(Color color) {
+        super(color);
     }
 
-    interface Color {
-        String drawColor();
+    @Override
+    public void draw() {
+        System.out.println("画一个" + getColor().drawColor() + "的正方形");
+    }
+}
+
+class Triangle extends Shape {
+    public Triangle(Color color) {
+        super(color);
     }
 
-    static class White implements Color {
-        @Override
-        public String drawColor() {
-            return "白色";
-        }
+    @Override
+    public void draw() {
+        System.out.println("画一个" + getColor().drawColor() + "的三角形");
     }
+}
 
-    static class Black implements Color {
-        @Override
-        public String drawColor() {
-            return "黑色";
-        }
+interface Color {
+    String drawColor();
+}
+
+class White implements Color {
+    @Override
+    public String drawColor() {
+        return "白色";
+    }
+}
+
+class Black implements Color {
+    @Override
+    public String drawColor() {
+        return "黑色";
     }
 }

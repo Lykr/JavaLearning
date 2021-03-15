@@ -17,39 +17,47 @@ public class FlyweightPattern {
         flyweight1.show(position1);
         flyweight1.show(position2);
     }
+}
 
-    interface Flyweight {
-        void show(Position position);
+interface Flyweight {
+    void show(Position position);
+}
+
+class ConcreteFlyweight implements Flyweight {
+    private String key;
+
+    public ConcreteFlyweight(String key) {
+        this.key = key;
     }
 
-    static class ConcreteFlyweight implements Flyweight {
-        private String key;
+    @Override
+    public void show(Position position) {
+        System.out.println(position.getX() + ", " + position.getY());
+    }
+}
 
-        public ConcreteFlyweight(String key) {
-            this.key = key;
-        }
+class FlyweightFactory {
+    private final ConcurrentHashMap<String, Flyweight> map = new ConcurrentHashMap<>();
 
-        @Override
-        public void show(Position position) {
-            System.out.println(position.x + ", " + position.y);
-        }
+    public Flyweight getFlyweight(String key) {
+        return map.computeIfAbsent(key, ConcreteFlyweight::new);
+    }
+}
+
+class Position {
+    private int x;
+    private int y;
+
+    public int getX() {
+        return x;
     }
 
-    static class FlyweightFactory {
-        private final ConcurrentHashMap<String, Flyweight> map = new ConcurrentHashMap<>();
-
-        public Flyweight getFlyweight(String key) {
-            return map.computeIfAbsent(key, ConcreteFlyweight::new);
-        }
+    public int getY() {
+        return y;
     }
 
-    static class Position {
-        private int x;
-        private int y;
-
-        public Position(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
+    public Position(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 }

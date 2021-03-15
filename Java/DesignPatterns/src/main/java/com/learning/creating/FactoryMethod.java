@@ -7,50 +7,49 @@ package com.learning.creating;
 public class FactoryMethod {
 
     public static void main(String[] args) {
-        AbstractFactory factoryA = new ConcreteFactoryA();
-        AbstractFactory factoryB = new ConcreteFactoryB();
-        Product productA = factoryA.makeProduct();
-        Product productB = factoryB.makeProduct();
+        AbstractFactory0 factoryA = new ConcreteFactoryA0();
+        AbstractFactory0 factoryB = new ConcreteFactoryB0();
+        Product0 productA = factoryA.makeProduct();
+        Product0 productB = factoryB.makeProduct();
         productA.show();
         productB.show();
     }
+}
 
-    interface Product {
-        void show();
+interface Product0 {
+    void show();
+}
+
+class ConcreteProductA implements Product0 {
+    @Override
+    public void show() {
+        System.out.println("产品 A 正在显示");
     }
+}
 
-    static class ConcreteProdcutA implements Product {
-        @Override
-        public void show() {
-            System.out.println("产品 A 正在显示");
-        }
+class ConcreteProductB implements Product0 {
+    @Override
+    public void show() {
+        System.out.println("产品 B 正在显示");
     }
+}
 
-    static class ConcreteProdcutB implements Product {
-        @Override
-        public void show() {
-            System.out.println("产品 B 正在显示");
-        }
+interface AbstractFactory0 {
+    Product0 makeProduct();
+}
+
+class ConcreteFactoryA0 implements AbstractFactory0 {
+    @Override
+    public Product0 makeProduct() {
+        System.out.println("生成产品 A");
+        return new ConcreteProductA();
     }
+}
 
-    interface AbstractFactory {
-        Product makeProduct();
+class ConcreteFactoryB0 implements AbstractFactory0 {
+    @Override
+    public Product0 makeProduct() {
+        System.out.println("生成产品 B");
+        return new ConcreteProductB();
     }
-
-    static class ConcreteFactoryA implements AbstractFactory {
-        @Override
-        public Product makeProduct() {
-            System.out.println("生成产品 A");
-            return new ConcreteProdcutA();
-        }
-    }
-
-    static class ConcreteFactoryB implements AbstractFactory {
-        @Override
-        public Product makeProduct() {
-            System.out.println("生成产品 B");
-            return new ConcreteProdcutB();
-        }
-    }
-
 }

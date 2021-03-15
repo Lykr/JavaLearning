@@ -11,82 +11,82 @@ public class BuilderPattern {
         Product product = director.construct();
         product.show();
     }
+}
 
-    static class Product {
-        private String partA;
-        private String partB;
-        private String partC;
+class Product {
+    private String partA;
+    private String partB;
+    private String partC;
 
-        public void setPartA(String partA) {
-            this.partA = partA;
-        }
-
-        public void setPartB(String partB) {
-            this.partB = partB;
-        }
-
-        public void setPartC(String partC) {
-            this.partC = partC;
-        }
-
-        @Override
-        public String toString() {
-            return "Product{" +
-                    "partA='" + partA + '\'' +
-                    ", partB='" + partB + '\'' +
-                    ", partC='" + partC + '\'' +
-                    '}';
-        }
-
-        public void show() {
-            System.out.println(this.toString());
-        }
+    public void setPartA(String partA) {
+        this.partA = partA;
     }
 
-    abstract static class Builder {
-        protected Product product = new Product();
-
-        public abstract void buildPartA();
-
-        public abstract void buildPartB();
-
-        public abstract void buildPartC();
-
-        public Product getProduct() {
-            return product;
-        }
+    public void setPartB(String partB) {
+        this.partB = partB;
     }
 
-    static class ConcreteBuilder extends Builder {
-        @Override
-        public void buildPartA() {
-            product.setPartA("A 组装完毕");
-        }
-
-        @Override
-        public void buildPartB() {
-            product.setPartB("B 组装完毕");
-        }
-
-        @Override
-        public void buildPartC() {
-            product.setPartC("C 组装完毕");
-        }
+    public void setPartC(String partC) {
+        this.partC = partC;
     }
 
-    static class Director {
-        private Builder builder;
+    @Override
+    public String toString() {
+        return "Product{" +
+                "partA='" + partA + '\'' +
+                ", partB='" + partB + '\'' +
+                ", partC='" + partC + '\'' +
+                '}';
+    }
 
-        public Director(Builder builder) {
-            this.builder = builder;
-        }
+    public void show() {
+        System.out.println(this.toString());
+    }
+}
 
-        public Product construct() {
-            builder.buildPartA();
-            builder.buildPartB();
-            builder.buildPartC();
-            System.out.println("产品组装完成");
-            return builder.getProduct();
-        }
+abstract class Builder {
+    protected Product product = new Product();
+
+    public abstract void buildPartA();
+
+    public abstract void buildPartB();
+
+    public abstract void buildPartC();
+
+    public Product getProduct() {
+        return product;
+    }
+}
+
+class ConcreteBuilder extends Builder {
+    @Override
+    public void buildPartA() {
+        product.setPartA("A 组装完毕");
+    }
+
+    @Override
+    public void buildPartB() {
+        product.setPartB("B 组装完毕");
+    }
+
+    @Override
+    public void buildPartC() {
+        product.setPartC("C 组装完毕");
+    }
+}
+
+class Director {
+    private Builder builder;
+
+    public Director(Builder builder) {
+        this.builder = builder;
+    }
+
+    public Product construct() {
+        builder.buildPartA();
+        builder.buildPartB();
+        builder.buildPartC();
+        System.out.println("产品组装完成");
+        return builder.getProduct();
     }
 }

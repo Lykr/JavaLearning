@@ -11,22 +11,22 @@ public class Prototype {
         System.out.println("realizetype.equals(realizetypeClone)：" + realizetype.equals(realizetypeClone)); //true
         System.out.println("realizetype == realizetypeClone：" + (realizetype == realizetypeClone)); //true
     }
+}
 
-    //Cloneable 接口就是一个抽象原型类
-    static class Realizetype implements Cloneable {
-        public Realizetype() {
-            System.out.println("实例化 Realizetype 成功");
-        }
+//Cloneable 接口就是一个抽象原型类
+class Realizetype implements Cloneable {
+    public Realizetype() {
+        System.out.println("实例化 Realizetype 成功");
+    }
 
-        public Realizetype clone() {
-            System.out.println("复制 Realizetype 成功");
-            Realizetype realizetype = null;
-            try {
-                realizetype = (Realizetype) super.clone();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return realizetype;
+    public Realizetype clone() {
+        System.out.println("复制 Realizetype 成功");
+        Realizetype realizetype = null;
+        try {
+            realizetype = (Realizetype) super.clone();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return realizetype;
     }
 }

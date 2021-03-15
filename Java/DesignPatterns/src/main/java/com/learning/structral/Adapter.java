@@ -13,34 +13,34 @@ public class Adapter {
         ObjectAdapter objectAdapter = new ObjectAdapter(new Adaptee());
         objectAdapter.hello();
     }
+}
 
-    interface Hello {
-        void hello();
+interface Hello {
+    void hello();
+}
+
+class Adaptee {
+    public void hi() {
+        System.out.println("Hi~");
+    }
+}
+
+class ClassAdapter extends Adaptee implements Hello {
+    @Override
+    public void hello() {
+        this.hi();
+    }
+}
+
+class ObjectAdapter implements Hello {
+    private Adaptee adaptee;
+
+    public ObjectAdapter(Adaptee adaptee) {
+        this.adaptee = adaptee;
     }
 
-    static class Adaptee {
-        public void hi() {
-            System.out.println("Hi~");
-        }
-    }
-
-    static class ClassAdapter extends Adaptee implements Hello {
-        @Override
-        public void hello() {
-            this.hi();
-        }
-    }
-
-    static class ObjectAdapter implements Hello {
-        private Adaptee adaptee;
-
-        public ObjectAdapter(Adaptee adaptee) {
-            this.adaptee = adaptee;
-        }
-
-        @Override
-        public void hello() {
-            adaptee.hi();
-        }
+    @Override
+    public void hello() {
+        adaptee.hi();
     }
 }
