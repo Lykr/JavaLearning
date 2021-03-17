@@ -9,8 +9,8 @@ public class ReentrantLockTest {
         TestClass testClass = new TestClass();
         TestClass testClass0 = new TestClass();
         ExecutorService threadPool = Executors.newFixedThreadPool(8);
-        threadPool.execute(() -> testClass.func());
-        threadPool.execute(() -> testClass0.func());
+        threadPool.execute(testClass::func);
+        threadPool.execute(testClass0::func);
         threadPool.shutdown();
     }
 

@@ -6,8 +6,8 @@ public class SynchronizedTest {
     public static void main(String[] args) {
         TestClass testClass = new TestClass();
         ExecutorService threadPool = Executors.newFixedThreadPool(8);
-        threadPool.execute(() -> testClass.func());
-        threadPool.execute(() -> testClass.func());
+        threadPool.execute(testClass::func);
+        threadPool.execute(testClass::func);
         threadPool.shutdown();
     }
 
