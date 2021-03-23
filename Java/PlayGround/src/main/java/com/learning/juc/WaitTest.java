@@ -20,14 +20,14 @@ public class WaitTest {
         public synchronized void func() {
             if (count++ < 3) {
                 try {
+                    System.out.println(Thread.currentThread().getName() + "wait");
                     wait(); // 挂起当前线程后会释放锁，以便于之后的线程调用该方法
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            } else {
-                notifyAll();
             }
-            System.out.println(Thread.currentThread().getName());
+            System.out.println(Thread.currentThread().getName() + "notify");
+            notify();
         }
     }
 }
