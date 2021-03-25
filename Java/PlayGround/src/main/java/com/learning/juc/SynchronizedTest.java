@@ -28,5 +28,14 @@ public class SynchronizedTest {
             }
             System.out.println("Exit func2");
         }
+
+        public static void func3() {
+            System.out.println("Enter func3");
+            // In static method, synchronized can only be used to static resources (cannot be used to dynamic resources like "this")
+            synchronized (TestClass.class) {
+                System.out.println("Run func3");
+            }
+            System.out.println("Exit func3");
+        }
     }
 }
