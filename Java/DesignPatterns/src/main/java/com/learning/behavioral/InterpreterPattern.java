@@ -24,7 +24,7 @@ public class InterpreterPattern {
 
 //抽象表达式类
 interface Expression {
-    public boolean interpret(String info);
+    boolean interpret(String info);
 }
 
 //终结符表达式类

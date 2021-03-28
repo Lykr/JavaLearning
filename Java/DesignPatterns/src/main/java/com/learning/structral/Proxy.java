@@ -12,9 +12,12 @@ import java.lang.reflect.Method;
 public class Proxy {
 
     public static void main(String[] args) {
+        System.out.println("静态代理");
         Subject staticProxy = new StaticProxy();
         staticProxy.print();
+        System.out.println("------------------------------");
 
+        System.out.println("动态代理");
         Handler handler = new Handler();
         Subject dynamicProxy = (Subject) java.lang.reflect.Proxy.newProxyInstance(Subject.class.getClassLoader(), new Class[]{Subject.class}, handler);
         dynamicProxy.print();
