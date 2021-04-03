@@ -2,6 +2,7 @@ package com.learning.behavioral;
 
 /**
  * 对有状态的对象，把复杂的“判断逻辑”提取到不同的状态对象中，允许状态对象在其内部状态发生改变时改变其行为。
+ * 状态是从内部发生改变的。
  */
 public class StatePattern {
     public static void main(String[] args) {

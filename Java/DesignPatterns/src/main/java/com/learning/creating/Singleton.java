@@ -17,6 +17,10 @@ public class Singleton {
         LazySingleton.getInstance();
         System.out.println("第 1 次调用 HungrySingleton 的 getInstance()");
         HungrySingleton.getInstance();
+        System.out.println("第 1 次调用 DoubleCheckSingleton 的 getInstance()");
+        DoubleCheckSingleton.getInstance();
+        System.out.println("第 2 次调用 DoubleCheckSingleton 的 getInstance()");
+        DoubleCheckSingleton.getInstance();
     }
 }
 
@@ -58,6 +62,32 @@ class HungrySingleton {
     public static HungrySingleton getInstance() {
         System.out.println("HungrySingleton 当前实例：" + instance);
         System.out.println("返回 HungrySingleton 实例");
+        return instance;
+    }
+}
+
+/**
+ * 双端检测的单例模式
+ * 预防多线程下对实例的重复生成
+ */
+class DoubleCheckSingleton {
+    private static volatile DoubleCheckSingleton instance = null;
+
+    private DoubleCheckSingleton() {}
+
+    public static DoubleCheckSingleton getInstance() {
+        System.out.println("DoubleCheckSingleton 第一次检查");
+        if (instance == null) {
+            synchronized (DoubleCheckSingleton.class) {
+                System.out.println("DoubleCheckSingleton 进入同步");
+                System.out.println("DoubleCheckSingleton 第二次检查");
+                if (instance == null) {
+                    System.out.println("生成 DoubleCheckSingleton 实例");
+                    instance = new DoubleCheckSingleton();
+                }
+            }
+        }
+        System.out.println("返回 DoubleCheckSingleton 实例");
         return instance;
     }
 }

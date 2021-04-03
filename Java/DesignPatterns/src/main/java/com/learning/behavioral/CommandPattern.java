@@ -40,6 +40,7 @@ class ConcreteCommandA implements Command {
         this.receiver = new ReceiverA();
     }
 
+    @Override
     public void execute() {
         receiver.action();
     }
@@ -52,6 +53,7 @@ class ConcreteCommandB implements Command {
         this.receiver = new ReceiverB();
     }
 
+    @Override
     public void execute() {
         receiver.action();
     }

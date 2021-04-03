@@ -44,7 +44,10 @@ class Product {
     }
 }
 
-abstract class Builder {
+/**
+ * 构造者：负责生成组成对象的部分。
+ */
+abstract class  Builder {
     protected Product product = new Product();
 
     public abstract void buildPartA();
@@ -75,6 +78,9 @@ class ConcreteBuilder extends Builder {
     }
 }
 
+/**
+ * 指导者：负责调用构造者组装对象。
+ */
 class Director {
     private Builder builder;
 

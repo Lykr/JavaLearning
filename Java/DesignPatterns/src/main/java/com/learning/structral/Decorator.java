@@ -1,5 +1,8 @@
 package com.learning.structral;
 
+/**
+ * 装饰器模式，给对象添加新的行为
+ */
 public class Decorator {
 
     public static void main(String[] args) {

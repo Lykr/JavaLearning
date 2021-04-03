@@ -2,6 +2,8 @@ package com.learning.creating;
 
 /**
  * 用一个已经创建的实例作为原型，通过复制该原型对象来创建一个和原型相同或相似的新对象。
+ * 核心思想是实现 Cloneable 接口，实现 clone() 方法返回原型对象的深拷贝。
+ * 多线程模式下对于有状态的对象可以采用原型模式避免线程安全问题。
  */
 public class Prototype {
 
