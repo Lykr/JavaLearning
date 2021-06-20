@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket Test Page</title>
+</head>
+<body>
+    <input id="text" type="text" />
+    <button onclick="send()">Send</button>
+    <button onclick="closeWebSocket()">Close</button>
+    <div id="message"></div>
+</body>
+<script type="text/javascript">
+    let websocket = null;
+
+    if ('WebSocket' in window) {
+        websocket = new WebSocket("ws://localhost:8080/ws/date");
+    } else {
+        alert('Not support websocket')
+    }
+
+    if (websocket != null) {
+        // Callback when connection error
+        websocket.onerror = function() {
+            showMessage("error");
+        };
+
+        // Callback when open connection
+        websocket.onopen = function(event) {
+            showMessage("open");
+        }
+
+        // Callback when receive message
+        websocket.onmessage = function(event) {
+            showMessage(event.data);
+        }
+
+        // Callback when close connection
+        websocket.onclose = function() {
+            showMessage("close");
+        }
+
+        // Callback when close the window
+        window.onbeforeunload = function() {
+            closeWebSocket();
+        }
+    }
+
+    // Show message
+    function showMessage(message) {
+        document.getElementById('message').innerHTML += message + '<br/>';
+    }
+
+    // Close connection
+    function closeWebSocket() {
+        websocket.close();
+    }
+
+    // Send message
+    function send() {
+        let message = document.getElementById('text').value;
+        websocket.send(message);
+    }
+</script>
+</html>
