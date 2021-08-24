@@ -1,7 +1,5 @@
 package com.learning.algorithm.other;
 
-import java.util.Arrays;
-
 public class DisorderMeasurer {
     public static void main(String[] args) {
         DisorderMeasurer dm = new DisorderMeasurer();

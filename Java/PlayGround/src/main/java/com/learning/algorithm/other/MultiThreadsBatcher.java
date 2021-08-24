@@ -9,13 +9,10 @@ public class MultiThreadsBatcher<E> {
     private final int timeout; // in milliseconds
     private final ConcurrentLinkedQueue<E> queue;
 
-    private long lastConsumeTime;
-
     public MultiThreadsBatcher(int batchSize, int timeout) {
         this.batchSize = batchSize;
         this.timeout = timeout;
         this.queue = new ConcurrentLinkedQueue<>();
-        this.lastConsumeTime = System.currentTimeMillis();
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -25,37 +22,35 @@ public class MultiThreadsBatcher<E> {
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(2);
         CountDownLatch latch = new CountDownLatch(transNum);
 
-        scheduledExecutorService.scheduleAtFixedRate(mtb::consume, 0, 20, TimeUnit.MILLISECONDS);
+        scheduledExecutorService.scheduleAtFixedRate(() -> mtb.consume(latch), 0, 20, TimeUnit.MILLISECONDS);
 
         for (int i = 0; i < transNum; i++) {
             final int num = i;
-            threadPool.execute(() -> {
-                mtb.store(num);
-                latch.countDown();
-            });
+            threadPool.execute(() -> mtb.store(num));
         }
 
         latch.await();
+
+        /* Must shutdown thread pool to exit, because they are not daemon threads */
+        threadPool.shutdown();
+        scheduledExecutorService.shutdown();
     }
 
     public void store(E obj) {
-        long curTime = System.currentTimeMillis();
-
         this.queue.offer(obj);
-
-        if (this.queue.size() >= this.batchSize || curTime - this.lastConsumeTime >= this.timeout) {
-            this.lastConsumeTime = curTime;
-            consume();
-        }
     }
 
-    public void consume() {
+    public void consume(CountDownLatch latch) {
         List<E> list = new LinkedList<>();
 
         for (int i = 0; i < this.batchSize; i++) {
-            list.add(this.queue.poll());
+            E obj = this.queue.poll();
+            if (obj != null) {
+                list.add(obj);
+                latch.countDown();
+            }
         }
 
-        System.out.println(list);
+        System.out.println(list + "" + latch.getCount());
     }
 }
